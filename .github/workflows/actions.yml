@@ -22,5 +22,6 @@ jobs:
           brew install docker
           brew install colima
           brew services start colima
+          colima start
           docker ps
 
