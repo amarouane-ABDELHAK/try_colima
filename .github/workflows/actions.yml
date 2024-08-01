@@ -19,8 +19,10 @@ jobs:
 
       - name: Set up docker
         run: |
-          brew install docker
-          brew install docker docker-compose
+          arch -arm64 brew install docker
+          arch -arm64 brew install docker docker-compose
+          arch -arm64 brew install colima
+          arch -arm64 brew services start colima
           mkdir -p ~/.docker/cli-plugins
           ln -sfn /usr/local/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
           colima start
