@@ -19,7 +19,7 @@ jobs:
 
       - name: Set up docker
         run: |
-          arch -arm64 brew cask install docker
+          arch -arm64 brew --cask install docker
           arch -arm64 brew install colima
           arch -arm64 brew services start docker
           arch -arm64 brew services start colima
