@@ -132,7 +132,7 @@ jobs:
       DIRECTORY: veda-data-airflow
       AWS_REGION: "us-west-2"
       ENVIRONMENT: ${{ github.event.inputs.environment }}
-    if: ${{ github.event.inputs.DEPLOY_SM2A
+    if: ${{ github.event.inputs.DEPLOY_SM2A }}
     environment: ${{ github.event.inputs.environment }}
 
     steps:
