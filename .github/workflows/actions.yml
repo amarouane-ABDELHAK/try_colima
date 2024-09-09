@@ -183,7 +183,6 @@ jobs:
       AWS_REGION: "us-west-2"
       ENVIRONMENT: ${{ github.event.inputs.environment }}
       GH_PAT_CHECK: ${{ secrets.GH_PAT }}
-    needs: [export-env-vars]
     if: github.event.inputs.DEPLOY_MONITORING
     environment: ${{ github.event.inputs.environment }}
 
