@@ -15,37 +15,37 @@ on:
         type: boolean
         required: true
         default: true
-        description: Flag to deploy Auth
+        description: DEPLOY_AUTH
       DEPLOY_BACKEND:
         type: boolean
         required: true
         default: true
-        description: Flag to deploy Backend
+        description: DEPLOY_BACKEND
       DEPLOY_DATA_AIRFLOW:
         type: boolean
         required: true
         default: true
-        description: Flag to deploy DATA_AIRFLOW
+        description: DEPLOY_DATA_AIRFLOW
       DEPLOY_FEATURES_API:
         type: boolean
         required: true
         default: false
-        description: Flag to deploy FEATURES_API
+        description: DEPLOY_FEATURES_API
       DEPLOY_ROUTES:
         type: boolean
         required: true
         default: false
-        description: Flag to deploy Routes
+        description: DEPLOY_ROUTES
       DEPLOY_SM2A:
         type: boolean
         required: true
         default: true
-        description: Flag to deploy SM2A
+        description: DEPLOY_SM2A
       DEPLOY_MONITORING:
         type: boolean
         required: true
         default: false
-        description: Flag to deploy Monitoring System
+        description: DEPLOY_MONITORING
 
 concurrency:
   group: ${{ inputs.environment }}
