@@ -61,7 +61,7 @@ jobs:
     env:
       DIRECTORY: veda-auth
       ENVIRONMENT: ${{ github.event.inputs.environment }}
-    environment: ${{ github.event.inputs.environment }}
+    environment: ${{ github.event.inputs.environment == 'true' }}
     if: ${{ github.event.inputs.DEPLOY_AUTH }}
 
     steps:
@@ -84,7 +84,7 @@ jobs:
       DIRECTORY: veda-backend
       ENVIRONMENT: ${{ github.event.inputs.environment }}
     needs: [deploy-veda-auth]
-    if: ${{ github.event.inputs.DEPLOY_BACKEND }}
+    if: ${{ github.event.inputs.DEPLOY_BACKEND == 'true' }}
     environment: ${{ github.event.inputs.environment }}
 
     steps:
@@ -108,7 +108,7 @@ jobs:
       AWS_REGION: "us-west-2"
       ENVIRONMENT: ${{ github.event.inputs.environment }}
     needs: [deploy-veda-auth, deploy-veda-backend]
-    if: ${{ github.event.inputs.DEPLOY_DATA_AIRFLOW }}
+    if: ${{ github.event.inputs.DEPLOY_DATA_AIRFLOW == 'true' }}
     environment: ${{ github.event.inputs.environment }}
 
     steps:
@@ -132,7 +132,7 @@ jobs:
       DIRECTORY: veda-data-airflow
       AWS_REGION: "us-west-2"
       ENVIRONMENT: ${{ github.event.inputs.environment }}
-    if: ${{ github.event.inputs.DEPLOY_SM2A }}
+    if: ${{ github.event.inputs.DEPLOY_SM2A == 'true' }}
     environment: ${{ github.event.inputs.environment }}
 
     steps:
@@ -155,7 +155,7 @@ jobs:
     name: Deploy VEDA features-api 🗺️
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
-    if: ${{ github.event.inputs.DEPLOY_FEATURES_API }}
+    if: ${{ github.event.inputs.DEPLOY_FEATURES_API == 'true' }}
     env:
       DIRECTORY: veda-features-api-cdk
       ENVIRONMENT: ${{ github.event.inputs.environment }}
