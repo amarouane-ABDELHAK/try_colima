@@ -168,7 +168,7 @@ jobs:
           submodules: "false"
 
       - name: Run deploy-veda-features-api deployment
-        id: deploy-veda-features-api deployment
+        id: deploy-veda-features-api
         shell: bash
         run: echo "Deploying VEDA deploy-veda-features-api"
 
