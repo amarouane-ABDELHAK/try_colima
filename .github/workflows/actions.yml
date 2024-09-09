@@ -183,7 +183,7 @@ jobs:
       AWS_REGION: "us-west-2"
       ENVIRONMENT: ${{ github.event.inputs.environment }}
       GH_PAT_CHECK: ${{ secrets.GH_PAT }}
-    if: ${{ github.event.inputs.DEPLOY_MONITORING }}
+    if: ${{ github.event.inputs.DEPLOY_MONITORING == 'true' }}
     environment: ${{ github.event.inputs.environment }}
 
     steps:
@@ -200,5 +200,5 @@ jobs:
         run: |
           echo "Deploying VEDA deploy-veda-monitoring"
           echo ${{ github.event.inputs.DEPLOY_MONITORING }}
-          
+
   
