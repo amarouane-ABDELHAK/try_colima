@@ -1,27 +1,203 @@
-name: Try
+name: CI/CD 🚀
 
 permissions:
   id-token: write
   contents: read
 
 on:
-  - push
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        required: true
+        description: Environment to deploy to
+      DEPLOY_AUTH:
+        type: boolean
+        required: true
+        default: true
+        description: Flag to deploy Auth
+      DEPLOY_BACKEND:
+        type: boolean
+        required: true
+        default: true
+        description: Flag to deploy Backend
+      DEPLOY_DATA_AIRFLOW:
+        type: boolean
+        required: true
+        default: true
+        description: Flag to deploy DATA_AIRFLOW
+      DEPLOY_FEATURES_API:
+        type: boolean
+        required: true
+        default: false
+        description: Flag to deploy FEATURES_API
+      DEPLOY_ROUTES:
+        type: boolean
+        required: true
+        default: false
+        description: Flag to deploy Routes
+      DEPLOY_SM2A:
+        type: boolean
+        required: true
+        default: true
+        description: Flag to deploy SM2A
+      DEPLOY_MONITORING:
+        type: boolean
+        required: true
+        default: false
+        description: Flag to deploy Monitoring System
 
+concurrency:
+  group: ${{ inputs.environment }}
+  cancel-in-progress: true
+
+run-name: Deploy to ${{ inputs.environment }} environment by @${{ github.actor }}
 
 jobs:
-  deploy:
-    runs-on: macos-latest
 
-    name: Build 🚀
+  deploy-veda-auth:
+    name: Deploy VEDA auth 🔐
+    runs-on: ubuntu-latest
+    env:
+      DIRECTORY: veda-auth
+      ENVIRONMENT: ${{ github.event.inputs.environment }}
+    environment: ${{ github.event.inputs.environment }}
+    if: github.event.inputs.DEPLOY_AUTH
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          lfs: "true"
+          submodules: "false"
 
-      - name: Set up docker
-        run: |
-          arch -arm64 brew --cask install docker
-          arch -arm64 brew install colima
-          arch -arm64 brew services start docker
-          arch -arm64 brew services start colima
-          docker ps
+      - name: Run auth deployment
+        id: deploy_auth_stack
+        shell: bash
+        run: echo "Deploying VEDA AUTH"
 
+
+  deploy-veda-backend:
+    name: Deploy VEDA backend ⚙️
+    runs-on: ubuntu-latest
+    env:
+      DIRECTORY: veda-backend
+      ENVIRONMENT: ${{ github.event.inputs.environment }}
+    needs: [deploy-veda-auth]
+    if: github.event.inputs.DEPLOY_BACKEND
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: "true"
+          submodules: "false"
+
+      - name: Run backend deployment
+        id: deploy_backend_stack
+        shell: bash
+        run: echo "Deploying VEDA BACKEND"
+
+
+  deploy-veda-data-airflow:
+    name: deploy VEDA data airflow 🍃
+    runs-on: ubuntu-latest
+    env:
+      DIRECTORY: veda-data-airflow
+      AWS_REGION: "us-west-2"
+      ENVIRONMENT: ${{ github.event.inputs.environment }}
+    needs: [deploy-veda-auth, deploy-veda-backend]
+    if: github.event.inputs.DEPLOY_DATA_AIRFLOW
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: "true"
+          submodules: "false"
+
+
+      - name: Run deploy-veda-data-airflow deployment
+        id: deploy-veda-data-airflow
+        shell: bash
+        run: echo "Deploying VEDA deploy-veda-data-airflow"
+
+
+  deploy-veda-data-airflow-sm2a:
+    name: deploy VEDA data airflow SM2A 🛸
+    runs-on: ubuntu-latest
+    env:
+      DIRECTORY: veda-data-airflow
+      AWS_REGION: "us-west-2"
+      ENVIRONMENT: ${{ github.event.inputs.environment }}
+    if: github.event.inputs.DEPLOY_SM2A
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: "true"
+          submodules: "false"
+
+
+      - name: Run deploy-veda-data-airflow-sm2a deployment
+        id: deploy-veda-data-airflow-sm2a
+        shell: bash
+        run: echo "Deploying VEDA deploy-veda-data-airflow-sm2aw"
+
+    outputs:
+      workflows_sm2a_api_value: dfff
+
+  deploy-veda-features-api:
+    name: Deploy VEDA features-api 🗺️
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    if: github.event.inputs.DEPLOY_FEATURES_API
+    env:
+      DIRECTORY: veda-features-api-cdk
+      ENVIRONMENT: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: "true"
+          submodules: "false"
+
+      - name: Run deploy-veda-features-api deployment
+        id: deploy-veda-features-api deployment
+        shell: bash
+        run: echo "Deploying VEDA deploy-veda-features-api"
+
+    outputs:
+      features_api_stack_name: cecec
+
+  deploy-veda-monitoring:
+    name: deploy VEDA monitoring 👁️
+    runs-on: ubuntu-latest
+    env:
+      DIRECTORY: veda-monitoring
+      AWS_REGION: "us-west-2"
+      ENVIRONMENT: ${{ github.event.inputs.environment }}
+      GH_PAT_CHECK: ${{ secrets.GH_PAT }}
+    needs: [export-env-vars]
+    if: github.event.inputs.DEPLOY_MONITORING
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Checkout
+        if: ${{ env.GH_PAT_CHECK != '' }}
+        uses: actions/checkout@v4
+        with:
+          lfs: "true"
+          submodules: "false"
+
+      - name: Run deploy-veda-monitoring deployment
+        id: deploy-veda-monitoring
+        shell: bash
+        run: echo "Deploying VEDA deploy-veda-monitoring"
+
+  
