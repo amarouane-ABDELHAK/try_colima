@@ -197,6 +197,8 @@ jobs:
       - name: Run deploy-veda-monitoring deployment
         id: deploy-veda-monitoring
         shell: bash
-        run: echo "Deploying VEDA deploy-veda-monitoring"
-
+        run: |
+          echo "Deploying VEDA deploy-veda-monitoring"
+          echo ${{ github.event.inputs.DEPLOY_MONITORING }}
+          
   
