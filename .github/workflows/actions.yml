@@ -3,6 +3,7 @@ name: CI/CD 🚀
 permissions:
   id-token: write
   contents: read
+  issues: write
 
 on:
   workflow_dispatch:
@@ -60,7 +61,7 @@ jobs:
     steps:
       - name: Validation
         uses: trstringer/manual-approval@v1
-        if: ${{ github.event.inputs.environment == 'ghgc-mcp-production-blue' }}
+        if: ${{ github.event.inputs.environment == 'production' }}
         timeout-minutes: 60 # The approver will have 1 hour to approve this request
         with:
           secret: ${{ secrets.GITHUB_TOKEN }}
