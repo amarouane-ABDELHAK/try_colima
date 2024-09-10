@@ -61,9 +61,10 @@ jobs:
       - name: Validation
         uses: trstringer/manual-approval@v1
         if: ${{ github.event.inputs.environment == 'ghgc-mcp-production-blue' }}
+        timeout-minutes: 60 // The approver will have 1 hour to approve this request
         with:
           secret: ${{ secrets.GITHUB_TOKEN }}
-          approvers: [amarouane-ABDELHAK, slesaad]
+          approvers: amarouane-ABDELHAK,slesaad
           minimum-approvals: 1
           issue-title: "Deploying to GHG production"
           issue-body: "Please approve or deny the deployment"
