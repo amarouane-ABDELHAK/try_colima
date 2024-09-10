@@ -56,7 +56,6 @@ run-name: Deploy to ${{ inputs.environment }} environment by @${{ github.actor }
 jobs:
   check-environment:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}
     name: Got ${{ github.event.inputs.environment }}
     steps:
       - name: Validation
