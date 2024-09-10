@@ -61,7 +61,7 @@ jobs:
       - name: Validation
         uses: trstringer/manual-approval@v1
         if: ${{ github.event.inputs.environment == 'ghgc-mcp-production-blue' }}
-        timeout-minutes: 60 // The approver will have 1 hour to approve this request
+        timeout-minutes: 60 # The approver will have 1 hour to approve this request
         with:
           secret: ${{ secrets.GITHUB_TOKEN }}
           approvers: amarouane-ABDELHAK,slesaad
