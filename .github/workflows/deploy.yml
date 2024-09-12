@@ -8,47 +8,51 @@ permissions:
 on:
   workflow_call:
     inputs:
+      environment:
+        type: string
+        required: true
+        description: Environment to deploy to
       DEPLOY_AUTH:
         type: boolean
-        required: false
+        required: true
         default: true
         description: DEPLOY_AUTH
       DEPLOY_BACKEND:
         type: boolean
-        required: false
+        required: true
         default: true
         description: DEPLOY_BACKEND
       DEPLOY_DATA_AIRFLOW:
         type: boolean
-        required: false
+        required: true
         default: true
         description: DEPLOY_DATA_AIRFLOW
       DEPLOY_FEATURES_API:
         type: boolean
-        required: false
+        required: true
         default: false
         description: DEPLOY_FEATURES_API
       DEPLOY_ROUTES:
         type: boolean
-        required: false
+        required: true
         default: false
         description: DEPLOY_ROUTES
       DEPLOY_SM2A:
         type: boolean
-        required: false
+        required: true
         default: true
         description: DEPLOY_SM2A
       DEPLOY_MONITORING:
         type: boolean
-        required: false
+        required: true
         default: false
         description: DEPLOY_MONITORING
 
 concurrency:
-  group: ${{ github.event.inputs.environment }}
+  group: ${{ inputs.environment }}
   cancel-in-progress: true
 
-run-name: Deploy to ${{ github.event.inputs.environment }} environment by @${{ github.actor }}
+run-name: Deploy to ${{ inputs.environment }} environment by @${{ github.actor }}
 
 jobs:
   deploy-veda-auth:
@@ -57,9 +61,9 @@ jobs:
     
     env:
       DIRECTORY: veda-auth
-      ENVIRONMENT: ${{ github.event.inputs.environment }}
-    environment: ${{ github.event.inputs.environment }}
-    if: ${{ github.event.inputs.DEPLOY_AUTH == 'true' }}
+      ENVIRONMENT: ${{ inputs.environment }}
+    environment: ${{ inputs.environment }}
+    if: ${{ inputs.DEPLOY_AUTH == 'true' }}
 
     steps:
       - name: Checkout
@@ -79,10 +83,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DIRECTORY: veda-backend
-      ENVIRONMENT: ${{ github.event.inputs.environment }}
+      ENVIRONMENT: ${{ inputs.environment }}
     needs: [deploy-veda-auth]
-    if: ${{ github.event.inputs.DEPLOY_BACKEND == 'true' }}
-    environment: ${{ github.event.inputs.environment }}
+    if: ${{ inputs.DEPLOY_BACKEND == 'true' }}
+    environment: ${{ inputs.environment }}
 
     steps:
       - name: Checkout
@@ -103,10 +107,10 @@ jobs:
     env:
       DIRECTORY: veda-data-airflow
       AWS_REGION: "us-west-2"
-      ENVIRONMENT: ${{ github.event.inputs.environment }}
+      ENVIRONMENT: ${{ inputs.environment }}
     needs: [deploy-veda-auth, deploy-veda-backend]
-    if: ${{ github.event.inputs.DEPLOY_DATA_AIRFLOW == 'true' }}
-    environment: ${{ github.event.inputs.environment }}
+    if: ${{ inputs.DEPLOY_DATA_AIRFLOW == 'true' }}
+    environment: ${{ inputs.environment }}
 
     steps:
       - name: Checkout
@@ -128,9 +132,9 @@ jobs:
     env:
       DIRECTORY: veda-data-airflow
       AWS_REGION: "us-west-2"
-      ENVIRONMENT: ${{ github.event.inputs.environment }}
-    if: ${{ github.event.inputs.DEPLOY_SM2A == 'true' }}
-    environment: ${{ github.event.inputs.environment }}
+      ENVIRONMENT: ${{ inputs.environment }}
+    if: ${{ inputs.DEPLOY_SM2A == 'true' }}
+    environment: ${{ inputs.environment }}
 
     steps:
       - name: Checkout
@@ -151,11 +155,11 @@ jobs:
   deploy-veda-features-api:
     name: Deploy VEDA features-api 🗺️
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}
-    if: ${{ github.event.inputs.DEPLOY_FEATURES_API == 'true' }}
+    environment: ${{ inputs.environment }}
+    if: ${{ inputs.DEPLOY_FEATURES_API == 'true' }}
     env:
       DIRECTORY: veda-features-api-cdk
-      ENVIRONMENT: ${{ github.event.inputs.environment }}
+      ENVIRONMENT: ${{ inputs.environment }}
 
     steps:
       - name: Checkout
@@ -178,10 +182,10 @@ jobs:
     env:
       DIRECTORY: veda-monitoring
       AWS_REGION: "us-west-2"
-      ENVIRONMENT: ${{ github.event.inputs.environment }}
+      ENVIRONMENT: ${{ inputs.environment }}
       GH_PAT_CHECK: ${{ secrets.GH_PAT }}
-    if: ${{ github.event.inputs.DEPLOY_MONITORING == 'true' }}
-    environment: ${{ github.event.inputs.environment }}
+    if: ${{ inputs.DEPLOY_MONITORING == 'true' }}
+    environment: ${{ inputs.environment }}
 
     steps:
       - name: Checkout
@@ -196,6 +200,6 @@ jobs:
         shell: bash
         run: |
           echo "Deploying VEDA deploy-veda-monitoring"
-          echo ${{ github.event.inputs.DEPLOY_MONITORING }}
+          echo ${{ inputs.DEPLOY_MONITORING }}
 
   
