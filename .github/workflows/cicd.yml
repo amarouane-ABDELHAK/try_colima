@@ -63,4 +63,13 @@ jobs:
     name: Deploy VEDA Components
     uses: "./.github/workflows/deploy.yml"
     needs: check-environment
+    with:
+      environment: ${{ github.event.inputs.environment }} 
+      DEPLOY_AUTH: ${{ github.event.inputs.DEPLOY_AUTH }} 
+      DEPLOY_BACKEND: ${{ github.event.inputs.DEPLOY_BACKEND }}
+      DEPLOY_DATA_AIRFLOW: ${{ github.event.inputs.DEPLOY_DATA_AIRFLOW }}
+      DEPLOY_FEATURES_API: ${{ github.event.inputs.DEPLOY_FEATURES_API }}
+      DEPLOY_ROUTES: ${{ github.event.inputs.DEPLOY_ROUTES }}
+      DEPLOY_SM2A: ${{ github.event.inputs.DEPLOY_SM2A }}
+      DEPLOY_MONITORING: ${{ github.event.inputs.DEPLOY_MONITORING }}
     secrets: inherit
