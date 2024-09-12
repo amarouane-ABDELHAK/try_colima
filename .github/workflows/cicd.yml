@@ -57,11 +57,10 @@ jobs:
       - name: Validation
         shell: bash
         run: |
-          echo "Hello"
+          echo "Hello you are"
 
   deploy-veda-components:
     name: Deploy VEDA Components
     uses: "./.github/workflows/deploy.yml"
     needs: check-environment
     secrets: inherit
-    
