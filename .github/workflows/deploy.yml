@@ -8,10 +8,6 @@ permissions:
 on:
   workflow_call:
     inputs:
-      environment:
-        type: environment
-        required: false
-        description: Environment to deploy to
       DEPLOY_AUTH:
         type: boolean
         required: false
@@ -49,10 +45,10 @@ on:
         description: DEPLOY_MONITORING
 
 concurrency:
-  group: ${{ inputs.environment }}
+  group: ${{ github.event.inputs.environment }}
   cancel-in-progress: true
 
-run-name: Deploy to ${{ inputs.environment }} environment by @${{ github.actor }}
+run-name: Deploy to ${{ github.event.inputs.environment }} environment by @${{ github.actor }}
 
 jobs:
   deploy-veda-auth:
