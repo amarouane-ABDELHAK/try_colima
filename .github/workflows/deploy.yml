@@ -13,37 +13,37 @@ on:
         required: true
         description: Environment to deploy to
       DEPLOY_AUTH:
-        type: boolean
+        type: string
         required: true
         default: true
         description: DEPLOY_AUTH
       DEPLOY_BACKEND:
-        type: boolean
+        type: string
         required: true
         default: true
         description: DEPLOY_BACKEND
       DEPLOY_DATA_AIRFLOW:
-        type: boolean
+        type: string
         required: true
         default: true
         description: DEPLOY_DATA_AIRFLOW
       DEPLOY_FEATURES_API:
-        type: boolean
+        type: string
         required: true
         default: false
         description: DEPLOY_FEATURES_API
       DEPLOY_ROUTES:
-        type: boolean
+        type: string
         required: true
         default: false
         description: DEPLOY_ROUTES
       DEPLOY_SM2A:
-        type: boolean
+        type: string
         required: true
         default: true
         description: DEPLOY_SM2A
       DEPLOY_MONITORING:
-        type: boolean
+        type: string
         required: true
         default: false
         description: DEPLOY_MONITORING
