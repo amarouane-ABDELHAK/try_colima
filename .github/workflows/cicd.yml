@@ -64,4 +64,4 @@ jobs:
     uses: "./.github/workflows/deploy.yml"
     needs: check-environment
     secrets: inherit
-    inputs: inherit
+    
