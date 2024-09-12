@@ -58,10 +58,9 @@ jobs:
         shell: bash
         run: |
           echo "Hello"
-          
+
   deploy-veda-components:
     name: Deploy VEDA Components
-    runs-on: ubuntu-latest
     uses: "./.github/workflows/deploy.yml"
     needs: check-environment
     secrets: inherit
