@@ -1,4 +1,4 @@
-name: CI/CD 🚀
+name: Deploy 🚀
 
 permissions:
   id-token: write
