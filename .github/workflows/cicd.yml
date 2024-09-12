@@ -1,0 +1,68 @@
+name: CI/CD 🧱
+
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        required: true
+        description: Environment to deploy to
+      DEPLOY_AUTH:
+        type: boolean
+        required: true
+        default: true
+        description: DEPLOY_AUTH
+      DEPLOY_BACKEND:
+        type: boolean
+        required: true
+        default: true
+        description: DEPLOY_BACKEND
+      DEPLOY_DATA_AIRFLOW:
+        type: boolean
+        required: true
+        default: false
+        description: DEPLOY_DATA_AIRFLOW
+      DEPLOY_FEATURES_API:
+        type: boolean
+        required: true
+        default: false
+        description: DEPLOY_FEATURES_API
+      DEPLOY_ROUTES:
+        type: boolean
+        required: true
+        default: false
+        description: DEPLOY_ROUTES
+      DEPLOY_SM2A:
+        type: boolean
+        required: true
+        default: false
+        description: DEPLOY_SM2A
+      DEPLOY_MONITORING:
+        type: boolean
+        required: true
+        default: false
+        description: DEPLOY_MONITORING
+
+
+jobs:
+  check-environment:
+    runs-on: ubuntu-latest
+    name: Got ${{ github.event.inputs.environment }}
+    steps:
+      - name: Validation
+        shell: bash
+        run: |
+          echo "Hello"
+          
+  deploy-veda-components:
+    name: Deploy VEDA Components
+    runs-on: ubuntu-latest
+    uses: "./.github/workflows/deploy.yml"
+    needs: check-environment
+    secrets: inherit
+    inputs: inherit
